@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<!-- Cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h2>Página do Usuário</h2>
+
+        <h2 th:inline="text">Olá [[${#httpServletRequest.remoteUser}]]!</h2>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+
+    </div>
+
+</div>
+<!-- /.container -->
+<!-- Rodapé da aplicação -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

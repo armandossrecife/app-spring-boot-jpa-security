@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+
+	<!-- Cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h3>Portal do Administrador</h3>
+
+			<h4 th:inline="text">Olá [[${#httpServletRequest.remoteUser}]]!</h4>
+			
+			<a href="listaconvidados" class="btn btn-lg btn-primary">Lista de convidados</a>
+			<br></br>
+			<br></br>
+			<form th:action="@{/logout}" method="post">
+				<input type="submit" value="Sign Out" />
+			</form>
+
+		</div>
+
+	</div>
+	<!-- /.container -->
+
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>

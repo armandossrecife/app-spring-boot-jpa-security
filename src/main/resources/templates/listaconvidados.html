@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+
+	<!-- Cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+		<div class="starter-template">
+			<div id="listaDeConvidados">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Email</th>
+							<th>telefone</th>
+							<th>Alterar</th>
+							<th>Remover</th>
+						</tr>
+					</thead>
+					<tr th:each="convidado : ${convidados}">
+						<td><span th:text="${convidado.nome}"></span></td>
+						<td><span th:text="${convidado.email}"></span></td>
+						<td><span th:text="${convidado.telefone}"></span></td>
+						<td><a th:href="@{'alterar/'} + ${convidado.id}">Alterar</a></td>
+						<td><a th:href="@{'remover/'} + ${convidado.id}">Remover</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	
+	<form action="salvar" method="post">
+		<div class="form-group">
+			<label for="nome">Nome</label> <input type="text"
+				class="form-control" id="nome" name="nome" placeholder="Nome" />
+		</div>
+		<div class="form-group">
+			<label for="email">Email</label> <input type="email"
+				class="form-control" id="email" name="email" placeholder="Email" />
+		</div>
+		<div class="form-group">
+			<label for="telefone">Telefone</label> <input type="text"
+				class="form-control" id="telefone" name="telefone"
+				placeholder="Telefone" />
+		</div>
+		<button type="submit" class="btn btn-lg btn-primary">Convidar</button>
+	</form>
+	</div>
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<!--  Cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h3>403 - Accesso negado!</h3>
+        <div th:inline="text">Olá '[[${#httpServletRequest.remoteUser}]]', você não tem permissão para acessar essa página.</div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<!-- Rodapé da aplicação -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

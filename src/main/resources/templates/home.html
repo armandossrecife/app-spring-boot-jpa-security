@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring Boot Thymeleaf + Spring Security</title>
+
+<div th:replace="fragments/header :: header-css" />
+
+</head>
+<body>
+
+	<!-- Cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h3>Controle de acesso</h3>
+			<br></br>
+			<h4>
+				Admin <a th:href="@{/admin}">Acesso do Administrador</a>
+			</h4>
+			<h4>
+				User <a th:href="@{/user}">Acesso do usuário comum</a>
+			</h4>
+			<h5>
+				Visitante <a th:href="@{/about}">Sobre a aplicação</a>
+			</h5>
+		</div>
+
+	</div>
+	<!-- /.container -->
+
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>
