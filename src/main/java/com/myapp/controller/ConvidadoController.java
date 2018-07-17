@@ -67,7 +67,7 @@ public class ConvidadoController {
 	 */
 	@RequestMapping(value = "/alterar/{id}", method = RequestMethod.GET)
 	public String carregaFormularioAlterar(@PathVariable Long id, Model model){
-		Convidado convidado = service.buscarClientePorId(id);
+		Convidado convidado = service.buscarConvidadoPorId(id);
 		
 		model.addAttribute("convidado", convidado);
 		

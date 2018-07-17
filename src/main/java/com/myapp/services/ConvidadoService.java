@@ -39,8 +39,7 @@ public class ConvidadoService {
      * @param id do convidado
      * @return convidado encontrado
      */
-	public Convidado buscarClientePorId(Long id) {
-		//Convidado resultado = repository.findById(id).get();
+	public Convidado buscarConvidadoPorId(Long id) {
 		return repository.findOne(id);
 	}
 	
@@ -57,7 +56,7 @@ public class ConvidadoService {
 	 * @param id do convidado selecionado
 	 */
 	public void remover(Long id){
-		repository.delete(this.buscarClientePorId(id));
+		repository.delete(this.buscarConvidadoPorId(id));
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class ConvidadoService {
 	 * @param telefone novo telefone convidado
 	 */
 	public void alterar(Long id, String nome, String email, String telefone) {
-		Convidado convidado = this.buscarClientePorId(id); 
+		Convidado convidado = this.buscarConvidadoPorId(id); 
 		convidado.setEmail(email);
 		convidado.setNome(nome);
 		convidado.setTelefone(telefone);

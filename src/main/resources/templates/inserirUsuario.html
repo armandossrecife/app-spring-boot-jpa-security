@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring Security Example</title>
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+
+	<!-- cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+
+		<div>
+			<form action="inserirUsuario" id="forminsereusuario" method="post"
+				name="forminsereusuario" enctype="multipart/form-data">
+				<p>Inserir usuário</p>
+				Nome: <input name="nome" type="text" >
+				<br></br> 
+				Login: <input name="login" type="text" >
+				<br></br> 
+				E-mail: <input name="email" type="text" >
+				<br></br> 
+				Senha: <input name="senha" type="password" >
+				<br></br> 
+				Confirma Senha: <input name="confirmasenha"
+					type="password" >
+				<br></br> 
+				Papel: <select name="papel">
+					<option value="usuario" selected>Usuário Comum</option>
+					<option value="admin">Administrador</option>
+				</select>
+				<br></br> Imagem: <input name="imagem" type="file" />
+				<p>
+					<input name="botaoInserir" type="submit" value="Inserir" />
+				</p>
+			</form>
+		</div>
+		<div>
+			<p>
+				<a href="/admin">Voltar</a>
+			</p>
+		</div>
+
+	</div>
+
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>
