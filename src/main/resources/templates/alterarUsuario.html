@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Spring Security Example</title>
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+	<!-- cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+	<div class="container">
+		<div>
+			<form action="alterarUsuario" id="formalterausuario" method="post" name="formalterausuario" enctype="multipart/form-data">	
+				<input id="id" name="id" th:value="${usuario.id}" type="hidden" />
+				<p>Alterar usuário</p>
+				Nome: <input name="nome" type="text" th:value="${usuario.nome}" />
+				<br></br> Login: <input name="login" type="text" th:value="${usuario.login}" />
+				<br></br> E-mail: <input name="email" type="text" th:value="${usuario.email}" />
+				<br></br> Senha: <input name="senha" type="password" />
+				<br></br> Confirma senha: <input name="confirmasenha" type="password" />
+				<br></br> 
+					Permissão: 
+					<select name="papel">
+						<option value="usuario">Usuário Comum</option>
+						<option value="admin">Administrador</option>
+					</select>
+					<br></br> 
+					Imagem: <spam th:text="${usuario.imagemPath}"></spam><input name="imagem" type="file" />
+				<p>
+					<input name="botaoalterar" type="submit" value="Alterar" />
+				</p>
+			</form>
+		</div>
+		<div>
+			<p>
+				<a href="/listarUsuarios">Voltar</a>
+			</p>
+		</div>
+
+	</div>
+
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>

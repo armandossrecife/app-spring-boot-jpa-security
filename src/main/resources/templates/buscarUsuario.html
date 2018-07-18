@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Security Example </title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<!-- cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+	<div>
+		<form action="buscarUsuario" id="formbuscausuario" method="post" name="formbuscausuario">
+			<p>Buscar usuário</p>
+			<p>
+				<select id="opcaotipo" name="opcaotipo">
+					<option value="nome">Nome</option>
+					<option value="email">E-mail</option>
+					<option value="login">Login</option>
+				</select>
+			</p>
+
+			<p>
+				Conteúdo<input maxlength="50" name="conteudobusca" size="50" type="text"/>
+			</p>
+			<p>
+				<input name="botaobuscar" type="submit" value="Buscar" />
+			</p>
+		</form>
+	</div>
+	<div>
+	<p><a href="/admin">Voltar</a></p>
+	</div>
+	
+</div>
+
+<!-- Rodapé da aplicação -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

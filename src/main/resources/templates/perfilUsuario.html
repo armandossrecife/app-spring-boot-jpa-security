@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Cabeçalho da aplicação -->
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+
+	<!-- Cabeçalho da aplicação -->
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+
+
+	<div>
+		<p><span th:text="${mensagem}"></span></p>
+	</div>
+	<div>
+		<table class="table table-bordered table-striped table-hover">
+			<tr>
+				<th>Id</th>
+				<th>Nome</th>
+				<th>Login</th>
+				<th>E-mail</th>
+				<th>Imagem</th>
+				<th>Alterar</th>
+			</tr>
+			<tr>
+				<td><span th:text="${usuario.id}"></span></td>
+				<td><span th:text="${usuario.nome}"></span></td>
+				<td><span th:text="${usuario.login}"></span></td>
+				<td><span th:text="${usuario.email}"></span></td>
+				<td><span th:text="${usuario.imagemPath}"></span></td>
+				<td><a th:href="@{'/alterarUsuario?id='} + ${usuario.id}">alterar</a></td>
+			</tr>
+		</table>
+	</div>
+	<div>
+	<p><a href="/home">Voltar</a></p>
+	</div>
+	
+	</div>
+	
+	<!-- Rodapé da aplicação -->
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>

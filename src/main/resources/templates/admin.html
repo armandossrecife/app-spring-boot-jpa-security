@@ -15,14 +15,19 @@
 			<h3>Portal do Administrador</h3>
 
 			<h4 th:inline="text">Olá [[${#httpServletRequest.remoteUser}]]!</h4>
-			
-			<a href="listaconvidados" class="btn btn-lg btn-primary">Lista de convidados</a>
-			<br></br>
-			<br></br>
+
+			<a href="listaconvidados" class="btn btn-lg btn-primary">Lista de
+				convidados</a> 
+				<br></br> 
+				<a href="listarUsuarios" class="btn btn-lg btn-primary">Listar Usuarios </a> 
+				<br></br> 
+				<a href="inserirUsuario" class="btn btn-lg btn-primary">Inserir
+				Usuario</a> 
+				<br></br> 
+				<a href="buscarUsuario" class="btn btn-lg btn-primary">Buscar Usuario </a> <br></br>
 			<form th:action="@{/logout}" method="post">
 				<input type="submit" value="Sign Out" />
 			</form>
-
 		</div>
 
 	</div>
@@ -30,6 +35,5 @@
 
 	<!-- Rodapé da aplicação -->
 	<div th:replace="fragments/footer :: footer" />
-
 </body>
 </html>
