@@ -14,22 +14,26 @@
 		<p>
 			<span th:text="${mensagem}"></span>
 		</p>
-		<table class="table table-bordered table-striped table-hover">
-			<tr>
-				<th>Id</th>
-				<th>Nome</th>
-				<th>E-mail</th>
-				<th>Detalhes</th>
-			</tr>
-			<tr th:each="usuario : ${usuarios}">
-				<td><span th:text="${usuario.id}"></span></td>
-				<td><span th:text="${usuario.nome}"></span></td>
-				<td><span th:text="${usuario.email}"></span></td>
-				<td><a th:href="@{'detalharUsuario/'} + ${usuario.id}">Detalhar</a></td>
-				<td><a th:href="@{'alterarUsuario?id='} + ${usuario.id}">Alterar</a></td>
-				<td><a th:href="@{'removerUsuario/'} + ${usuario.id}">Remover</a></td>
-			</tr>
-		</table>
+		<div th:if="${usuarios} != null">
+			<table class="table table-bordered table-striped table-hover">
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>E-mail</th>
+					<th>Detalhes</th>
+					<th>Alterar</th>
+					<th>Remover</th>
+				</tr>
+				<tr th:each="usuario : ${usuarios}">
+					<td><span th:text="${usuario.id}"></span></td>
+					<td><span th:text="${usuario.nome}"></span></td>
+					<td><span th:text="${usuario.email}"></span></td>
+					<td><a th:href="@{'detalharUsuario/'} + ${usuario.id}">Detalhar</a></td>
+					<td><a th:href="@{'alterarUsuario?id='} + ${usuario.id}">Alterar</a></td>
+					<td><a th:href="@{'removerUsuario/'} + ${usuario.id}">Remover</a></td>
+				</tr>
+			</table>
+		</div>
 		<div>
 			<p>
 				<a href="/admin">Voltar</a>

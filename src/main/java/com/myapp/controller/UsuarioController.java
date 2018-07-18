@@ -52,11 +52,10 @@ private static final long serialVersionUID = 1L;
 	 */
 	@RequestMapping(value="/buscarUsuario", method=RequestMethod.POST)
 	protected String processarBusca(HttpServletRequest request, HttpSession session, Model model) {
-		// recupera os dados passados pelo formulario de busca
 		String tipo = request.getParameter("opcaotipo");
 		String conteudo = request.getParameter("conteudobusca");
 		List<Usuario> usuarios=null; 
-		//TODO corrigir a busca que não retorna valor.-> EL1007E: Property or field 'id' cannot be found on null
+		
 		if (!conteudo.equals("")){
 			usuarios = usuarioService.buscarPorConteudo(conteudo, tipo);	
 			if (usuarios != null) {
@@ -94,7 +93,11 @@ private static final long serialVersionUID = 1L;
 	public String processarListaUsuarios(HttpSession session, Model model) {
 		List<Usuario> lista = usuarioService.listar();
 
-		model.addAttribute("usuarios", lista);
+		if (lista.size() > 0 ){
+			model.addAttribute("usuarios", lista);
+		}else{
+			model.addAttribute("mensagem", "Não há usuários cadastrados no sistema");
+		}
 		
 		return "/listarUsuarios";
 	}
@@ -110,10 +113,10 @@ private static final long serialVersionUID = 1L;
 	 * @throws IOException trata a exceção IOException caso aconteça
 	 */
 	@RequestMapping(value="/alterarUsuario", method=RequestMethod.POST)
-	public String processarAlterarUsuario(String papel, MultipartFile imagem, Usuario usuario,
-			HttpSession session, RedirectAttributes redirectAttribute) {
+	public String processarAlterarUsuario(String papel, MultipartFile imagem, Usuario usuario, HttpSession session, RedirectAttributes redirectAttribute) {
 		String senhaOriginal;
 		
+		//TODO tratar a inserção de arquivo multipart
 		if (!imagem.isEmpty()) {
 			String path = fileSaver.write("arquivos-imagem", imagem);
 			usuario.setImagemPath(path);
@@ -124,7 +127,7 @@ private static final long serialVersionUID = 1L;
 		usuario.setRoles(new ManipulaPermissoes().checaPapelUsuario(papel));
 
 		usuarioService.alterar(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getLogin(), usuario.getSenha(), usuario.getImagemPath());
-		redirectAttribute.addFlashAttribute("mensagem", "Usuário " + usuario.getId() + " alterado com sucesso!");
+		redirectAttribute.addFlashAttribute("mensagem", "Usuário " + usuario.getNome() + " alterado com sucesso!");
 		
 		return "redirect:/listarUsuarios";
 	}
@@ -170,10 +173,10 @@ private static final long serialVersionUID = 1L;
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/inserirUsuario", params={"save"})
-	public String processarInserirUsuario(final Usuario usuario, final String papel, final MultipartFile imagem,  
-			HttpSession session, RedirectAttributes redirectAttribute){
+	public String processarInserirUsuario(final Usuario usuario, final String papel, final MultipartFile imagem, HttpSession session, RedirectAttributes redirectAttribute){
 		String senhaOriginal; 
 			
+		//TODO tratar a inserção de arquivo multipart 
 		if (!imagem.isEmpty()) {
 			String path = fileSaver.write("arquivos-imagem", imagem);
 			usuario.setImagemPath(path);
@@ -181,6 +184,8 @@ private static final long serialVersionUID = 1L;
 
 		senhaOriginal = usuario.getSenha();
 		usuario.setSenha(new GeradorSenha().criptografa(senhaOriginal));
+		
+		//TODO melhorar a busca de Role para evitar Detached
 		Role regra = usuarioService.buscaRole((papel.equals("usuario") ? 1 : 2));
 		List<Role> regras = new ArrayList<>();
 		regras.add(regra);
@@ -216,8 +221,7 @@ private static final long serialVersionUID = 1L;
 	 * @return view listaUsuários | Home.jsp
 	 */
 	@RequestMapping("/removerUsuario/{id}")
-	public String processarRemoverUsuario(@PathVariable("id") int id, HttpSession session,
-			RedirectAttributes redirectAttribute) {
+	public String processarRemoverUsuario(@PathVariable("id") int id, HttpSession session, RedirectAttributes redirectAttribute) {
 		Usuario usuario = usuarioService.buscarPorId(id);
 		
 		usuarioService.remover(usuario);
@@ -229,7 +233,7 @@ private static final long serialVersionUID = 1L;
 	@RequestMapping("/meuperfil/{id}")
 	public ModelAndView processarPerfilUsuario(@PathVariable("id") Integer id, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/perfilUsuario");
-		
+		//TODO conclui a funcionalidade de exibição do perfil do usuário
 		return mav;
 	}
 
