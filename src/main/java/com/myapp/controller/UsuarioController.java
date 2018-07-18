@@ -1,5 +1,6 @@
 package com.myapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,13 +23,14 @@ import com.myapp.util.FileSaver;
 import com.myapp.util.GeradorSenha;
 import com.myapp.util.ManipulaPermissoes;
 
+import com.myapp.modelo.Role;
 
 @Controller
 public class UsuarioController {
 private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private UsuarioService usuarioDAO;
+	private UsuarioService usuarioService;
 	
 	@Autowired
 	private FileSaver fileSaver;
@@ -53,17 +55,20 @@ private static final long serialVersionUID = 1L;
 		// recupera os dados passados pelo formulario de busca
 		String tipo = request.getParameter("opcaotipo");
 		String conteudo = request.getParameter("conteudobusca");
-
-		//TODO implementar buscaPorConteudo no Controlador de Usuário
-		//Usuario usuario = usuarioDAO.buscarPorConteudo(conteudo, tipo);
-
-		/*
-		if (usuario != null) {
-			model.addAttribute("usuario", usuario);
-		} else {
-			model.addAttribute("mensagem", "Não retornou nenhum resultado!");
+		List<Usuario> usuarios=null; 
+		//TODO corrigir a busca que não retorna valor.-> EL1007E: Property or field 'id' cannot be found on null
+		if (!conteudo.equals("")){
+			usuarios = usuarioService.buscarPorConteudo(conteudo, tipo);	
+			if (usuarios != null) {
+				Usuario usuario = usuarios.get(0); //pega apenas o primeiro
+				model.addAttribute("usuario", usuario);
+			} else {
+				model.addAttribute("mensagem", "Não retornou nenhum resultado!");
+			}
+		}else{
+			model.addAttribute("mensagem", "Conteúdo vazio...");	
 		}
-		*/
+		
 		return "/resultadoBusca";
 
 	}
@@ -87,9 +92,10 @@ private static final long serialVersionUID = 1L;
 	 */
 	@RequestMapping(value="/listarUsuarios", method=RequestMethod.GET)
 	public String processarListaUsuarios(HttpSession session, Model model) {
-		List<Usuario> lista = usuarioDAO.listar();
+		List<Usuario> lista = usuarioService.listar();
 
 		model.addAttribute("usuarios", lista);
+		
 		return "/listarUsuarios";
 	}
 
@@ -117,8 +123,9 @@ private static final long serialVersionUID = 1L;
 		usuario.setSenha(new GeradorSenha().criptografa(senhaOriginal));
 		usuario.setRoles(new ManipulaPermissoes().checaPapelUsuario(papel));
 
-		usuarioDAO.alterar(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getLogin(), usuario.getSenha(), usuario.getImagemPath());
+		usuarioService.alterar(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getLogin(), usuario.getSenha(), usuario.getImagemPath());
 		redirectAttribute.addFlashAttribute("mensagem", "Usuário " + usuario.getId() + " alterado com sucesso!");
+		
 		return "redirect:/listarUsuarios";
 	}
 
@@ -129,9 +136,11 @@ private static final long serialVersionUID = 1L;
 	 */
 	@RequestMapping("/alterarUsuario")
 	public ModelAndView carregaFormularioAlterar(int id, HttpSession session) {
-		Usuario usuario = usuarioDAO.buscarPorId(id);
+		Usuario usuario = usuarioService.buscarPorId(id);
+		
 		ModelAndView mav = new ModelAndView("/alterarUsuario");
 		mav.addObject("usuario", usuario);
+		
 		return (mav);
 	}
 
@@ -140,8 +149,13 @@ private static final long serialVersionUID = 1L;
 	 * @param session Session do usuário da aplicação
 	 * @return página TelaInserirUsuario.jsp | Home.jsp
 	 */
-	@RequestMapping(value="/inserirUsuario", method=RequestMethod.GET)
-	public String carregarFormularioInserir(HttpSession session) {
+	@RequestMapping("/inserirUsuario")
+	public String carregarFormularioInserir(HttpSession session, Model model) {
+		Usuario usuario = new Usuario();
+		
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("papel", "papel");
+		
 		return "/inserirUsuario";
 	}
 
@@ -155,8 +169,8 @@ private static final long serialVersionUID = 1L;
 	 * @throws ServletException 
 	 * @throws IOException
 	 */
-	@RequestMapping("/inserirUsuario")
-	public String processarInserirUsuario(String papel, MultipartFile imagem, Usuario usuario, 
+	@RequestMapping(value="/inserirUsuario", params={"save"})
+	public String processarInserirUsuario(final Usuario usuario, final String papel, final MultipartFile imagem,  
 			HttpSession session, RedirectAttributes redirectAttribute){
 		String senhaOriginal; 
 			
@@ -167,10 +181,14 @@ private static final long serialVersionUID = 1L;
 
 		senhaOriginal = usuario.getSenha();
 		usuario.setSenha(new GeradorSenha().criptografa(senhaOriginal));
-		usuario.setRoles(new ManipulaPermissoes().checaPapelUsuario(papel));
+		Role regra = usuarioService.buscaRole((papel.equals("usuario") ? 1 : 2));
+		List<Role> regras = new ArrayList<>();
+		regras.add(regra);
+		usuario.setRoles(regras);
 		 
-		usuarioDAO.inserir(usuario);
+		usuarioService.inserir(usuario);
 		redirectAttribute.addFlashAttribute("mensagem", "Usuario inserido com sucesso!");
+		
 		return "redirect:/listarUsuarios";
 	}
 	
@@ -181,10 +199,12 @@ private static final long serialVersionUID = 1L;
 	 * @return view TelaDetalhesUsuario.jsp | Home.jsp
 	 */
 	@RequestMapping("/detalharUsuario/{id}")
-	public ModelAndView processarDetalhesUsuario(@PathVariable("id") Integer id, HttpSession session) {
-		ModelAndView mav = new ModelAndView("/detalhesUsuario");
-		Usuario usuario = usuarioDAO.buscarPorId(id);
+	public ModelAndView processarDetalhesUsuario(@PathVariable("id") int id, HttpSession session) {
+		ModelAndView mav = new ModelAndView("/detalharUsuario");
+		
+		Usuario usuario = usuarioService.buscarPorId(id);
 		mav.addObject("usuario", usuario);
+		
 		return mav;
 	}
 
@@ -196,17 +216,20 @@ private static final long serialVersionUID = 1L;
 	 * @return view listaUsuários | Home.jsp
 	 */
 	@RequestMapping("/removerUsuario/{id}")
-	public String processarRemoverUsuario(@PathVariable("id") Integer id, HttpSession session,
+	public String processarRemoverUsuario(@PathVariable("id") int id, HttpSession session,
 			RedirectAttributes redirectAttribute) {
-		Usuario usuario = usuarioDAO.buscarPorId(id);
-		usuarioDAO.remover(usuario);
+		Usuario usuario = usuarioService.buscarPorId(id);
+		
+		usuarioService.remover(usuario);
 		redirectAttribute.addFlashAttribute("mensagem", "Usuario " + id + " removido com sucesso!");
+		
 		return "redirect:/listarUsuarios";
 	}
 	
 	@RequestMapping("/meuperfil/{id}")
 	public ModelAndView processarPerfilUsuario(@PathVariable("id") Integer id, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/perfilUsuario");
+		
 		return mav;
 	}
 

@@ -13,28 +13,22 @@
 	<div class="container">
 
 		<div>
-			<form action="inserirUsuario" id="forminsereusuario" method="post"
+			<form action="#" th:action="@{/inserirUsuario}"
+				th:object="${usuario}" id="forminsereusuario" method="post"
 				name="forminsereusuario" enctype="multipart/form-data">
 				<p>Inserir usuário</p>
-				Nome: <input name="nome" type="text" >
-				<br></br> 
-				Login: <input name="login" type="text" >
-				<br></br> 
-				E-mail: <input name="email" type="text" >
-				<br></br> 
-				Senha: <input name="senha" type="password" >
-				<br></br> 
-				Confirma Senha: <input name="confirmasenha"
-					type="password" >
-				<br></br> 
-				Papel: <select name="papel">
-					<option value="usuario" selected>Usuário Comum</option>
-					<option value="admin">Administrador</option>
-				</select>
-				<br></br> Imagem: <input name="imagem" type="file" />
-				<p>
-					<input name="botaoInserir" type="submit" value="Inserir" />
-				</p>
+				Nome: <input name="nome" type="text" th:field="*{nome}" /> <br></br>
+				Login: <input name="login" type="text" th:field="*{login}" /> <br></br>
+				E-mail: <input name="email" type="text" th:field="*{email}" /> <br></br>
+				Senha: <input name="senha" type="password" th:field="*{senha}" /> <br></br>
+				Confirma Senha: <input name="confirmasenha" type="password" /> <br></br>
+				Papel: <select name="papel" id="papel">
+					<option th:value="usuario" th:text="usuario">Usuário</option>
+					<option th:value="admin" th:text="admin">Administrador</option>
+				</select> <br></br> Imagem: <input name="imagem" type="file" id="file" />
+				<div class="submit">
+					<button type="submit" name="save" th:text="Iserir">Inserir</button>
+				</div>
 			</form>
 		</div>
 		<div>

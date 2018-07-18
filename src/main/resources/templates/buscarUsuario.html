@@ -5,18 +5,15 @@
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-
 <!-- cabeçalho da aplicação -->
 <div th:replace="fragments/header :: header"/>
-
 <div class="container">
-
 	<div>
 		<form action="buscarUsuario" id="formbuscausuario" method="post" name="formbuscausuario">
 			<p>Buscar usuário</p>
 			<p>
 				<select id="opcaotipo" name="opcaotipo">
-					<option selected="selected" value="nome">Nome</option>
+					<option value="nome">Nome</option>
 					<option value="email">E-mail</option>
 					<option value="login">Login</option>
 				</select>

@@ -11,16 +11,16 @@
 
 	<div class="container">
 
-	<p><span th:text="${mensagem}"></span></p>
-	<table class="table table-bordered table-striped table-hover">
-		<tr>
-			<th>Id</th>
-			<th>Nome</th>
-			<th>E-mail</th>
-			<th>Detalhes</th>
-		</tr>
-		<!-- 	<security:authorize access="hasRole('ROLE_ADMIN')"><th>Alterar</th></security:authorize>  -->
-		<!-- 	<security:authorize access="hasRole('ROLE_ADMIN')"><th>Remover</th></security:authorize>  -->
+		<p>
+			<span th:text="${mensagem}"></span>
+		</p>
+		<table class="table table-bordered table-striped table-hover">
+			<tr>
+				<th>Id</th>
+				<th>Nome</th>
+				<th>E-mail</th>
+				<th>Detalhes</th>
+			</tr>
 			<tr th:each="usuario : ${usuarios}">
 				<td><span th:text="${usuario.id}"></span></td>
 				<td><span th:text="${usuario.nome}"></span></td>
@@ -29,16 +29,15 @@
 				<td><a th:href="@{'alterarUsuario?id='} + ${usuario.id}">Alterar</a></td>
 				<td><a th:href="@{'removerUsuario/'} + ${usuario.id}">Remover</a></td>
 			</tr>
+		</table>
+		<div>
+			<p>
+				<a href="/admin">Voltar</a>
+			</p>
+		</div>
 
-	</table>
-	<div>
-		<p>
-			<a href="/admin">Voltar</a>
-		</p>
 	</div>
 
-	</div>
-	
 	<!-- Rodapé da aplicação -->
 	<div th:replace="fragments/footer :: footer" />
 

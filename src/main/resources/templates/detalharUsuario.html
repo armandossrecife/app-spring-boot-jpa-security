@@ -5,13 +5,12 @@
 <div th:replace="fragments/header :: header-css" />
 </head>
 <body>
-
 	<!-- Cabeçalho da aplicação -->
 	<div th:replace="fragments/header :: header" />
-
 	<div class="container">
-
-		<p>${mensagem}</p>
+		<p>
+			<span th:text="${mensagem}"></span>
+		</p>
 		<table class="table table-bordered table-striped table-hover">
 			<tr>
 				<th>Id</th>
@@ -21,11 +20,11 @@
 				<th>Imagem</th>
 			</tr>
 			<tr>
-				<td><span th:text=${usuario.id}></span></td>
-				<td><span th:text=${usuario.nome}></span></td>
-				<td><span th:text=${usuario.login}></span></td>
-				<td><span th:text=${usuario.email}></span></td>
-				<td><span th:text=${usuario.imagemPath}></span></td>
+				<td><span th:text="${usuario.id}"></span></td>
+				<td><span th:text="${usuario.nome}"></span></td>
+				<td><span th:text="${usuario.login}"></span></td>
+				<td><span th:text="${usuario.email}"></span></td>
+				<td><span th:text="${usuario.imagemPath}"></span></td>
 			</tr>
 		</table>
 		<div>
